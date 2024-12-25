@@ -177,7 +177,7 @@ export default function ProductDetails() {
                 />
                 <p className="opacity-50 text-sm">73921 Ratings</p>
                 <p className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                  7328 Reviews
+                  10000 Reviews
                 </p>
               </div>
 
