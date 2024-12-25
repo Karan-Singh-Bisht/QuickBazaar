@@ -10,9 +10,9 @@ const App = () => {
   return (
     <div className="">
       <Navigation />
-      {/* <HomePage /> */}
-      {/* <Product /> */}
-      {/* <ProductDetails /> */}
+      <HomePage />
+      <Product />
+      <ProductDetails />
       <Cart />
       <Footer />
     </div>
