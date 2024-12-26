@@ -427,7 +427,7 @@ export default function ProductDetails() {
           <h1 className="py-5 text-xl font-bold">Similar Products</h1>
           <div className="flex space-y-5 gap-10 justify-center flex-wrap">
             {mens_kurta.map((item, index) => (
-              <ProductCard product={item} index={index} />
+              <ProductCard key={index} product={item} index={index} />
             ))}
           </div>
         </section>
