@@ -6,6 +6,7 @@ import Product from "./customer/components/product/Product";
 import ProductDetails from "./customer/components/productDetails/ProductDetails";
 import Cart from "./customer/components/cart/Cart";
 import Checkout from "./customer/components/checkout/Checkout";
+import Order from "./customer/components/order/Order";
 
 const App = () => {
   return (
@@ -15,7 +16,8 @@ const App = () => {
       {/* <Product /> */}
       {/* <ProductDetails /> */}
       {/* <Cart /> */}
-      <Checkout />
+      {/* <Checkout /> */}
+      <Order />
       <Footer />
     </div>
   );
