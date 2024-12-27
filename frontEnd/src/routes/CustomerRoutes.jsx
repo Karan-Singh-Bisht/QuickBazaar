@@ -25,11 +25,13 @@ const CustomerRoutes = () => {
         ></Route>
         <Route path="/product/:productId" element={<ProductDetails />}></Route>
         <Route path="/checkout" element={<Checkout />}></Route>
-        <Route path="/account/order" element={<Order />}></Route>
+        <Route path="/account/order" element={<Order />}></Route> //see all your
+        orders
         <Route
           path="/account/order/:orderId"
           element={<OrderDetails />}
-        ></Route>
+        ></Route>{" "}
+        //See a particular order
       </Routes>
       <div>
         <Footer />
