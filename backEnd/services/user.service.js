@@ -1,5 +1,4 @@
 const User = require("../models/user.model");
-const asyncHandler = require("../utils/asyncHandler");
 const jwt = require("jsonwebtoken");
 
 // Create a new user
@@ -76,7 +75,7 @@ const getUserProfileByToken = async (token) => {
 };
 
 // Get all users
-const getAllUsers = asyncHandler(async () => {
+const getAllUsers = async () => {
   try {
     const users = await User.find({});
 
@@ -89,7 +88,7 @@ const getAllUsers = asyncHandler(async () => {
     console.error("Error getting all users", err.message);
     throw err;
   }
-});
+};
 
 module.exports = {
   createUser,

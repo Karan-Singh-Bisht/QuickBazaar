@@ -4,7 +4,7 @@ const {
   getUserProfile,
   getAllUsers,
 } = require("../controllers/user.controller");
-const verifyUserToken = require("../middlewares/verifyUserToken");
+const { verifyUserToken } = require("../middlewares/verifyUserToken");
 
 router.get("/profile", getUserProfile);
 router.get("/", getAllUsers);

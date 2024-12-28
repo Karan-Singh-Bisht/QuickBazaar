@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 const userRoute = require("./routes/user.routes");
 const authRoute = require("./routes/auth.routes");
 
-app.use("/api/v1/users", userRoute);
+app.use("/api/v1/user", userRoute);
 app.use("/api/v1/auth", authRoute);
 
 const PORT = process.env.PORT || 8080;
