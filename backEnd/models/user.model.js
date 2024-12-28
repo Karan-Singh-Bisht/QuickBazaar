@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema(
     },
     mobile: {
       type: String,
-      required: true,
       match: /^\+?[1-9]\d{9,14}$/, // Allows 10-15 digits
     },
     address: [
