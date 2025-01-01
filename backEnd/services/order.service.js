@@ -1,6 +1,8 @@
-const cartService = require("./cart.service");
+const cartService = require("../services/cart.service");
 const Address = require("../models/address.model");
 const Order = require("../models/order.model");
+const OrderItem = require("../models/orderItems.model");
+const userService = require("../services/user.service");
 
 async function createOrder(user, shipAddress) {
   let address;
@@ -9,34 +11,37 @@ async function createOrder(user, shipAddress) {
     address = existingAddress;
   } else {
     address = new Address(shipAddress);
-    address.user = user;
-    await address.save();
-    user.addresses.push(address);
-    await user.save();
+    address.user = user.id;
+    await address.save(); //ERRROR -> user.address is undefined
+    const originalUser = await userService.findUserById(user.id);
+    originalUser.address.push(address);
+    await originalUser.save();
   }
-  const cart = await cartService.findUserCart(user._id);
+  const cart = await cartService.findUserCart(user);
   const orderItems = [];
 
   for (const item of cart.cartItems) {
-    const orderItem = new orderItems({
+    const orderItem = new OrderItem({
       price: item.price,
       product: item.product,
       quantity: item.quantity,
       discountedPrice: item.discountedPrice,
       size: item.size,
-      userId: item.userId,
+      userId: user.id,
     });
     const createdOrderItem = await orderItem.save();
     orderItems.push(createdOrderItem);
   }
   const createdOrder = new Order({
-    user,
+    user: user.id,
     orderItems,
     totalPrice: cart.totalPrice,
     totalDiscountedPrice: cart.totalDiscountedPrice,
+    discount: Math.ceil(
+      ((cart.totalPrice - cart.totalDiscountedPrice) / cart.totalPrice) * 100
+    ),
     totalItem: cart.totalItem,
-    shippingAddress: address,
-    address,
+    shippingAddress: address._id,
   });
 
   const savedOrder = await createdOrder.save();

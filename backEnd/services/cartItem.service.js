@@ -28,9 +28,9 @@ async function updateCartItem(userId, cartItemId, cartItemData) {
 async function removeCartItem(userId, cartItemId) {
   try {
     const cartItem = await findCartItemById(cartItemId);
-    const user = await userService.findUserById(cartItem.userId);
-    if (user._id.toString() === userId.toString()) {
-      await cartItem.findByIdAndDelete(cartItemId);
+    const user = await userService.findUserById(userId);
+    if (user.id.toString() === cartItem.userId.toString()) {
+      await CartItem.findByIdAndDelete(cartItemId);
       return "Item removed from cart successfully";
     } else {
       throw new Error("Unauthorized to remove this item");
@@ -42,10 +42,9 @@ async function removeCartItem(userId, cartItemId) {
 
 async function findCartItemById(cartItemId) {
   try {
-    if (!mongoose.Types.ObjectId.isValid(cartItemId)) {
-      throw new Error("Invalid Cart Item ID");
-    }
-    const cartItem = await CartItem.findById(cartItemId);
+    const cartItem = await CartItem.findById(cartItemId)
+      .populate("product")
+      .exec();
     if (!cartItem) {
       throw new Error("Item not found");
     }

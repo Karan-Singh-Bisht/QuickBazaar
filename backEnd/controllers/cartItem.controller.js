@@ -2,7 +2,7 @@ const cartItemService = require("../services/cartItem.service");
 
 const updateCartItem = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.id;
     const cartItemId = req.params.cartItemId;
     const cartItemData = req.body;
     const cartItem = await cartItemService.updateCartItem(
@@ -18,10 +18,12 @@ const updateCartItem = async (req, res) => {
 
 const removeCartItem = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = req.user.id;
     const cartItemId = req.params.cartItemId;
-    const response = await cartItemService.removeCartItem(userId, cartItemId);
-    return res.status(200).json({ message: "cartItem removed successfully" });
+    let response = await cartItemService.removeCartItem(userId, cartItemId);
+    return res
+      .status(200)
+      .json({ message: "cartItem removed successfully", response: response });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

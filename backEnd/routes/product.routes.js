@@ -8,6 +8,6 @@ const {
 const verifyUserToken = require("../middlewares/verifyUserToken");
 
 router.get("/", verifyUserToken, getAllProducts);
-router.post("/id/:productId", verifyUserToken, findProductById);
+router.get("/id/:productId", verifyUserToken, findProductById);
 
 module.exports = router;

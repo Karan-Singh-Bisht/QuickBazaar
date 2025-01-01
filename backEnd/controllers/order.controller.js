@@ -2,9 +2,8 @@ const orderService = require("../services/order.service");
 
 const createOrder = async (req, res) => {
   try {
-    const user = req.user;
-    const shipAddress = req.body.shipAddress;
-    const createdOrder = await orderService.createOrder(user, shipAddress);
+    const user = await req.user;
+    const createdOrder = await orderService.createOrder(user, req.body);
     return res.status(201).json(createdOrder);
   } catch (err) {
     return res.status(500).json({ message: err.message });
@@ -23,7 +22,7 @@ const findOrderById = async (req, res) => {
 
 const orderHistory = async (req, res) => {
   try {
-    const userId = req.user._id;
+    const userId = await req.user._id;
     const orders = await orderService.usersOrderHistory(userId);
     return res.status(200).json(orders);
   } catch (err) {
