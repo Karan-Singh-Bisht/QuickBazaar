@@ -20,11 +20,16 @@ module.exports.registerUser = async (req, res) => {
 
     await cartService.createCart(newUser);
 
+    // Send user details along with token
     return res.status(201).json({
       message: "User created successfully",
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      email: newUser.email,
+      token: token,
+      user: {
+        id: newUser.id,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        email: newUser.email,
+      },
     });
   } catch (err) {
     return res.status(500).json({
@@ -53,9 +58,7 @@ module.exports.login = async (req, res) => {
     });
     return res.status(200).json({
       message: "Login successful",
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
+      token: token,
     });
   } catch (err) {
     return res.status(500).json({ message: err.message });

@@ -12,6 +12,8 @@ import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import { navigation } from "../navigation/navigation";
 import { deepPurple } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
+import AuthModal from "../../auth/AuthModal";
+import { useSelector } from "react-redux";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -21,6 +23,9 @@ export default function Navigation() {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const auth = useSelector((state) => state.auth);
+
+  const [openAuthModal, setOpenAuthModal] = useState(false);
 
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -41,14 +46,14 @@ export default function Navigation() {
     close();
   };
 
-  // useEffect(() => {
-  //   if (auth.user) {
-  //     handleClose();
-  //   }
-  //   if (location.pathname === "/login" || location.pathname === "/register") {
-  //     navigate(-1);
-  //   }
-  // }, [auth.user]);
+  useEffect(() => {
+    if (auth.user) {
+      handleClose();
+    }
+    if (location.pathname === "/login" || location.pathname === "/register") {
+      navigate(-1);
+    }
+  }, [auth.user]);
 
   const handleLogout = () => {
     handleCloseUserMenu();
@@ -478,7 +483,7 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
-      {/* <AuthModal handleClose={handleClose} open={openAuthModal} /> */}
+      <AuthModal handleClose={handleClose} open={openAuthModal} />
     </div>
   );
 }
