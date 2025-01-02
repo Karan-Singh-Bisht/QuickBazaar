@@ -1,11 +1,23 @@
-import React from "react";
-import { Button, Grid, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Button, Grid, TextField, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUser, registerUser } from "../../state/Auth/authSlice";
 
 const RegisterForm = () => {
+  const dispatch = useDispatch(); //dispatch a function
   const navigate = useNavigate();
+  const token = useSelector((state) => state.auth.token);
 
-  const handleSubmit = (e) => {
+  const { loading, error } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (token) {
+      dispatch(getUser());
+    }
+  }, [dispatch, token]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
     const userData = {
@@ -14,7 +26,17 @@ const RegisterForm = () => {
       email: data.get("email"),
       password: data.get("password"),
     };
-    console.log(userData);
+    try {
+      const resultAction = await dispatch(registerUser(userData));
+
+      if (registerUser.rejected.match(resultAction)) {
+        console.log("Error during registration:", resultAction.payload);
+      } else {
+        navigate("/");
+      }
+    } catch (err) {
+      console.error("Error:", err);
+    }
   };
   return (
     <div>
@@ -60,15 +82,23 @@ const RegisterForm = () => {
               fullWidth
             />
           </Grid>
+          {error && (
+            <Grid item xs={12}>
+              <Typography color="error" variant="body2">
+                {error}
+              </Typography>
+            </Grid>
+          )}
           <Grid item xs={12}>
             <Button
               type="submit"
               variant="contained"
               size="large"
               sx={{ padding: ".8rem 0", bgcolor: "#9155FD" }}
+              disabled={loading}
               className="w-full"
             >
-              Register
+              {loading ? "Loading..." : "Register"}
             </Button>
           </Grid>
         </Grid>

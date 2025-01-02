@@ -20,11 +20,9 @@ module.exports.registerUser = async (req, res) => {
 
     await cartService.createCart(newUser);
 
-    return res.status(201).json({
+    return res.status(201).send({
       message: "User created successfully",
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      email: newUser.email,
+      jwt: token,
     });
   } catch (err) {
     return res.status(500).json({

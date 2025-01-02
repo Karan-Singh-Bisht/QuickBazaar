@@ -1,0 +1,143 @@
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { axiosInstance } from "../../../config/apiConfig.js";
+import axios from "axios";
+
+// Async thunk for login
+export const loginUser = createAsyncThunk(
+  "/login",
+  async (credentials, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post(
+        `/api/v1/auth/signin`,
+        credentials
+      );
+      localStorage.setItem("token", response.data.jwt); // Store token
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Login failed.");
+    }
+  }
+);
+
+// Async thunk for registration
+export const registerUser = createAsyncThunk(
+  "/register",
+  async (userData, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post(
+        `/api/v1/auth/signup`,
+        userData
+      );
+      localStorage.setItem("token", response.data.jwt); // Store token
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Registration failed."
+      );
+    }
+  }
+);
+
+// Async thunk to get user details
+export const getUser = createAsyncThunk(
+  "/getUser",
+  async (token, { rejectWithValue }) => {
+    try {
+      if (!token) {
+        return rejectWithValue("No token found");
+      }
+
+      const response = await axios.get(`/api/v1/user/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch user."
+      );
+    }
+  }
+);
+
+// Async thunk for logout
+export const logoutUser = createAsyncThunk(
+  "/logoutUser",
+  async (_, { dispatch }) => {
+    localStorage.removeItem("token");
+    dispatch(resetAuth()); // Reset state
+  }
+);
+
+// Auth Slice
+const authSlice = createSlice({
+  name: "auth",
+  initialState: {
+    user: null,
+    token: localStorage.getItem("token") || null,
+    loading: false,
+    error: null,
+  },
+  reducers: {
+    resetAuth: (state) => {
+      state.user = null;
+      state.token = null;
+      state.loading = false;
+      state.error = null;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      // Login cases
+      .addCase(loginUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loginUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.error = null;
+      })
+      .addCase(loginUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Logout cases
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.user = null;
+        state.token = null;
+        state.error = null;
+      })
+      // Register cases
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(registerUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.token = action.payload.jwt;
+        state.error = null;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      // Get user cases
+      .addCase(getUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload; // Update user details in state
+        state.error = null;
+      })
+      .addCase(getUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
+});
+
+export const { resetAuth } = authSlice.actions; // Export the reset action
+export default authSlice.reducer;
