@@ -62,7 +62,7 @@ export const getUser = createAsyncThunk(
 export const logoutUser = createAsyncThunk(
   "/logoutUser",
   async (_, { dispatch }) => {
-    localStorage.removeItem("token");
+    localStorage.clear();
     dispatch(resetAuth()); // Reset state
   }
 );

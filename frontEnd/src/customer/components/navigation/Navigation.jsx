@@ -14,6 +14,8 @@ import { deepPurple } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
 import AuthModal from "../../auth/AuthModal";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getUser, logoutUser } from "../../../state/Auth/authSlice";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -24,14 +26,22 @@ export default function Navigation() {
   const navigate = useNavigate();
   const location = useLocation();
   const auth = useSelector((state) => state.auth);
+  const jwtToken = localStorage.getItem("token");
+  const dispatch = useDispatch();
 
   const [openAuthModal, setOpenAuthModal] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(false);
+  const [openUserMenu, setOpenUserMenu] = useState(false);
+
+  const { loading, error } = useSelector((state) => state.auth);
 
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
+    setOpenUserMenu(true);
   };
   const handleCloseUserMenu = (event) => {
     setAnchorEl(null);
+    setOpenUserMenu(false);
   };
 
   const handleOpen = () => {
@@ -47,17 +57,23 @@ export default function Navigation() {
   };
 
   useEffect(() => {
-    if (auth.user) {
+    if (jwtToken) {
+      dispatch(getUser());
+    }
+  }, [jwtToken]);
+
+  useEffect(() => {
+    if (auth?.user) {
       handleClose();
     }
     if (location.pathname === "/login" || location.pathname === "/register") {
-      navigate(-1);
+      navigate("/");
     }
   }, [auth.user]);
 
   const handleLogout = () => {
     handleCloseUserMenu();
-    dispatch(logout());
+    dispatch(logoutUser());
   };
   // const handleMyOrderClick = () => {
   //   handleCloseUserMenu();
@@ -396,7 +412,7 @@ export default function Navigation() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {/* {auth.user ? (
+                  {auth.user?.user ? (
                     <div>
                       <Avatar
                         className="text-white"
@@ -411,9 +427,9 @@ export default function Navigation() {
                           cursor: "pointer",
                         }}
                       >
-                        {auth.user?.firstName[0].toUpperCase()}
-                      </Avatar> */}
-                  {/* <Button
+                        {auth.user?.user?.firstName[0].toUpperCase()}
+                      </Avatar>{" "}
+                      <Button
                         id="basic-button"
                         aria-controls={open ? "basic-menu" : undefined}
                         aria-haspopup="true"
@@ -421,22 +437,22 @@ export default function Navigation() {
                         onClick={handleUserClick}
                       >
                         Dashboard
-                      </Button> */}
-                  {/* <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={openUserMenu}
-                    onClose={handleCloseUserMenu}
-                    MenuListProps={{
-                      "aria-labelledby": "basic-button",
-                    }}
-                  > */}
-                  <MenuItem onClick={() => navigate("/account/order")}>
-                    My Orders
-                  </MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                  {/* </Menu> */}
-                  {/* </div>
+                      </Button>
+                      <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={openUserMenu}
+                        onClose={handleCloseUserMenu}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                      >
+                        <MenuItem onClick={() => navigate("/account/order")}>
+                          My Orders
+                        </MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                      </Menu>
+                    </div>
                   ) : (
                     <Button
                       onClick={handleOpen}
@@ -444,7 +460,7 @@ export default function Navigation() {
                     >
                       Signin
                     </Button>
-                  )} */}
+                  )}{" "}
                 </div>
 
                 {/* Search */}

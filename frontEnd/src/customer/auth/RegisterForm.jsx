@@ -1,15 +1,23 @@
 import { Button, Grid, TextField } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../state/Auth/authSlice";
+import { getUser, registerUser } from "../../state/Auth/authSlice";
 import { Typography } from "@mui/material";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const jwtToken = localStorage.getItem("token");
+  const auth = useSelector((state) => state.auth);
 
   const { loading, error } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (jwtToken) {
+      dispatch(getUser());
+    }
+  }, [jwtToken, auth.token]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,6 +36,9 @@ const RegisterForm = () => {
     }
   };
 
+  if (loading) {
+    return <h1>Loading..</h1>;
+  }
   return (
     <div>
       <form onSubmit={handleSubmit}>

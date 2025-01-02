@@ -1,19 +1,34 @@
 import { Button, Grid, TextField } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../state/Auth/authSlice";
+import { Typography } from "@mui/material";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleSubmit = (e) => {
+  const { error, loading } = useSelector((state) => state.auth);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const userData = {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-    console.log(userData);
+    try {
+      const user = await dispatch(loginUser(userData));
+      console.log(user);
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  if (loading) {
+    return <h1>Loading..</h1>;
+  }
 
   return (
     <div>
@@ -40,6 +55,13 @@ const LoginForm = () => {
               fullWidth
             />
           </Grid>
+          {error && (
+            <Grid item xs={12}>
+              <Typography color="error" variant="body2">
+                {error}
+              </Typography>
+            </Grid>
+          )}
           <Grid item xs={12}>
             <Button
               className="w-full"
