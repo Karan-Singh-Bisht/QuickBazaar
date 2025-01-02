@@ -6,8 +6,14 @@ const cookieParser = require("cookie-parser");
 const db = require("./config/db");
 db();
 
+const corsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+  maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+};
+
 app.use(cookieParser());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

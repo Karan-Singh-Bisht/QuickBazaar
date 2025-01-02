@@ -4,7 +4,7 @@ const getUserProfile = async (req, res) => {
   try {
     const jwt = req.cookies.token || req.headers.authorization?.split(" ")[1];
     if (!jwt) {
-      return res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "token not found" });
     }
     const user = await userService.getUserProfileByToken(jwt);
     if (!user) {
