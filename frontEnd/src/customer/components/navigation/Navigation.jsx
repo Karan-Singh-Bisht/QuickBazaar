@@ -12,6 +12,7 @@ import { Avatar, Button, Menu, MenuItem } from "@mui/material";
 import { navigation } from "../navigation/navigation";
 import { deepPurple } from "@mui/material/colors";
 import TextField from "@mui/material/TextField";
+import AuthModal from "../../auth/AuthModal";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -19,6 +20,7 @@ function classNames(...classes) {
 
 export default function Navigation() {
   const [open, setOpen] = useState(false);
+  const [openAuthModal, setOpenAuthModal] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -41,25 +43,10 @@ export default function Navigation() {
     close();
   };
 
-  // useEffect(() => {
-  //   if (auth.user) {
-  //     handleClose();
-  //   }
-  //   if (location.pathname === "/login" || location.pathname === "/register") {
-  //     navigate(-1);
-  //   }
-  // }, [auth.user]);
-
   const handleLogout = () => {
     handleCloseUserMenu();
     dispatch(logout());
   };
-  // const handleMyOrderClick = () => {
-  //   handleCloseUserMenu();
-  //   auth.user?.role === "ROLE_ADMIN"
-  //     ? navigate("/admin")
-  //     : navigate("/account/order");
-  // };
 
   return (
     <div className="bg-white pb-10">
@@ -391,7 +378,7 @@ export default function Navigation() {
 
               <div className="ml-auto flex items-center">
                 <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {/* {auth.user ? (
+                  {true ? (
                     <div>
                       <Avatar
                         className="text-white"
@@ -406,9 +393,9 @@ export default function Navigation() {
                           cursor: "pointer",
                         }}
                       >
-                        {auth.user?.firstName[0].toUpperCase()}
-                      </Avatar> */}
-                  {/* <Button
+                        {/* {auth.user?.firstName[0].toUpperCase()} */}
+                      </Avatar>
+                      <Button
                         id="basic-button"
                         aria-controls={open ? "basic-menu" : undefined}
                         aria-haspopup="true"
@@ -416,22 +403,22 @@ export default function Navigation() {
                         onClick={handleUserClick}
                       >
                         Dashboard
-                      </Button> */}
-                  {/* <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={openUserMenu}
-                    onClose={handleCloseUserMenu}
-                    MenuListProps={{
-                      "aria-labelledby": "basic-button",
-                    }}
-                  > */}
-                  <MenuItem onClick={() => navigate("/account/order")}>
-                    My Orders
-                  </MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                  {/* </Menu> */}
-                  {/* </div>
+                      </Button>
+                      {/* <Menu
+                        id="basic-menu"
+                        anchorEl={anchorEl}
+                        open={openUserMenu}
+                        onClose={handleCloseUserMenu}
+                        MenuListProps={{
+                          "aria-labelledby": "basic-button",
+                        }}
+                      >
+                        <MenuItem onClick={() => navigate("/account/order")}>
+                          My Orders
+                        </MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                      </Menu> */}
+                    </div>
                   ) : (
                     <Button
                       onClick={handleOpen}
@@ -439,7 +426,7 @@ export default function Navigation() {
                     >
                       Signin
                     </Button>
-                  )} */}
+                  )}
                 </div>
 
                 {/* Search */}
@@ -478,7 +465,7 @@ export default function Navigation() {
           </div>
         </nav>
       </header>
-      {/* <AuthModal handleClose={handleClose} open={openAuthModal} /> */}
+      <AuthModal handleClose={handleClose} open={openAuthModal} />
     </div>
   );
 }
