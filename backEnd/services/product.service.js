@@ -1,5 +1,7 @@
 const Category = require("../models/category.model");
 const Product = require("../models/product.model");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId; // Import ObjectId
 
 async function createProduct(reqData) {
   let topLevel = await Category.findOne({ name: reqData.topLavelCategory });
@@ -45,7 +47,7 @@ async function createProduct(reqData) {
     color: reqData.color,
     description: reqData.description,
     discountedPrice: reqData.discountedPrice,
-    discountPercent: reqData.discountPercent,
+    discountPersent: reqData.discountPersent,
     imageUrl: reqData.imageUrl,
     brand: reqData.brand,
     price: reqData.price,
@@ -79,79 +81,99 @@ async function findProductById(productId) {
 }
 
 async function getAllProducts(reqQuery) {
-  let {
-    category,
-    color,
-    sizes,
-    minPrice,
-    maxPrice,
-    minDiscount,
-    sort,
-    stock,
-    pageNumber,
-    pageSize,
-  } = reqQuery;
-  pageSize = pageSize || 10;
-  let query = Product.find().populate("category");
-  if (category) {
-    const existCateogry = await Category.findOne({ name: category });
-    if (existCateogry) {
-      query = query.where("category").equals(existCateogry._id);
-    } else {
-      return { content: [], currentPage: 1, totalPages: 0 };
+  try {
+    let {
+      category,
+      color,
+      sizes,
+      minPrice,
+      maxPrice,
+      minDiscount,
+      sort,
+      stock,
+      pageNumber = 1,
+      pageSize = 10,
+    } = reqQuery;
+
+    pageNumber = Math.max(1, Number(pageNumber)); // Ensure page >= 1
+    pageSize = Math.max(1, Number(pageSize)); // Ensure pageSize >= 1
+
+    let query = Product.find().populate("category");
+
+    // Category filter
+    if (category) {
+      const existCategory = await Category.findOne({ name: category });
+      console.log(existCategory);
+      if (existCategory) {
+        query = query.where("category").equals(existCategory._id);
+      } else {
+        return { content: [], currentPage: 1, totalPages: 0 };
+      }
     }
-  }
-  if (color) {
-    const colorSet = new Set(
-      color.split(",").map((color) => color.trim().toLowerCase())
-    );
 
-    const colorRegex =
-      colorSet.size > 0 ? new RegExp([...colorSet].join("|"), "i") : null;
-
-    query = query.where("color").regex(colorRegex);
-  }
-
-  if (sizes) {
-    const sizeSet = new Set(sizes);
-    query = query.where("sizes.name").in([...sizeSet]);
-  }
-
-  if (minPrice && maxPrice) {
-    query = query
-      .where("discountedPrice")
-      .gte(Number(minPrice))
-      .lte(Number(maxPrice));
-  }
-
-  if (minDiscount) {
-    query = query.where("discountPercent").gt(Number(minDiscount));
-  }
-
-  if (stock) {
-    if (stock == "in_stock") {
-      query = query.where("quantity").gt(0);
-    } else if (stock == "out_of_stock") {
-      query = query.where("quantity").lt(1);
+    // Color filter
+    if (color) {
+      const colorSet = new Set(
+        color.split(",").map((color) => color.trim().toLowerCase())
+      );
+      const colorRegex =
+        colorSet.size > 0 ? new RegExp([...colorSet].join("|"), "i") : null;
+      query = query.where("color").regex(colorRegex);
     }
+
+    // Size filter
+    if (sizes) {
+      const sizeSet = new Set(sizes);
+      query = query.where("sizes.name").in([...sizeSet]);
+    }
+
+    // Price range filter
+    if (!isNaN(minPrice) && !isNaN(maxPrice)) {
+      query = query
+        .where("discountedPrice")
+        .gte(Number(minPrice))
+        .lte(Number(maxPrice));
+    }
+
+    // Discount filter
+    if (minDiscount) {
+      query = query.where("discountPersent").gt(Number(minDiscount));
+    }
+
+    // Stock filter
+    if (stock) {
+      if (stock == "in_stock") {
+        query = query.where("quantity").gt(0);
+      } else if (stock == "out_of_stock") {
+        query = query.where("quantity").lt(1);
+      }
+    }
+
+    // Sorting
+    if (sort) {
+      const sortDirection = sort === "price_high" ? -1 : 1;
+      query = query.sort({ discountedPrice: sortDirection });
+    }
+
+    // Pagination
+    const totalProduct = await Product.countDocuments(query);
+    const skip = (pageNumber - 1) * pageSize;
+
+    query = query.skip(skip).limit(pageSize);
+
+    const products = await query.exec();
+
+    const totalPages = Math.ceil(totalProduct / pageSize);
+
+    return {
+      content: products,
+      currentPage: pageNumber,
+      totalPages,
+    };
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw new Error("Internal Server Error");
   }
-
-  if (sort) {
-    const sortDirection = sort === "price_high" ? -1 : 1;
-    query = query.sort({ discountedPrice: sortDirection });
-  }
-
-  const totalProduct = await Product.countDocuments(query);
-
-  const skip = (pageNumber - 1) * pageSize;
-
-  query = query.skip(skip).limit(pageSize);
-
-  const products = await query.exec();
-
-  const totalPages = Math.ceil(totalProduct / pageSize);
-
-  return { content: products, currentPage: pageNumber, totalPages };
 }
 
 async function createMultipleProduct(products) {

@@ -44,6 +44,9 @@ export const getUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token"); // Get token from localStorage
+      if (!token) {
+        throw new Error("Token not found. Please log in again.");
+      }
       const response = await axios.get(`${API_BASE_URL}/api/v1/user/profile`, {
         headers: {
           Authorization: `Bearer ${token}`, // Attach token in headers
