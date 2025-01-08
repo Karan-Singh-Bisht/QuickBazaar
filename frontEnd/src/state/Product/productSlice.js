@@ -9,7 +9,6 @@ export const fetchProducts = createAsyncThunk(
       const response = await axiosInstance.get("/api/v1/product", {
         params: filters,
       });
-      console.log(response);
       return response.data; // { content, currentPage, totalPages }
     } catch (error) {
       return rejectWithValue(error.response?.data || error.message);
@@ -21,7 +20,9 @@ export const findProductById = createAsyncThunk(
   "products/findById",
   async (productId, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/api/v1/product/${productId}`); // Replace with your API endpoint
+      const response = await axiosInstance.get(
+        `/api/v1/product/id/${productId}`
+      ); // Replace with your API endpoint
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data); // Handles errors gracefully

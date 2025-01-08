@@ -1,21 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
 import CartItem from "./CartItem";
 import { Button, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getCart } from "../../../state/Cart/cartSlice";
 
 const Cart = () => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const handleCheckOutButton = () => {
     navigate(`/checkout?step=${2}`);
   };
 
+  const cart = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    dispatch(getCart());
+  }, []);
+
   return (
     <div>
       <div className="lg:grid grid-cols-3 mt-10 lg:px-16 relative">
         <div className="col-span-2">
-          {[1, 1, 1, 1].map((item, index) => (
+          {cart.cart?.cartItems.map((item, index) => (
             <div key={index}>
-              <CartItem />
+              <CartItem item={item} />
             </div>
           ))}
         </div>
@@ -28,12 +38,16 @@ const Cart = () => {
             {/* //can use hr too */}
             <div className="space-y-3 font-semibold">
               <div className="flex justify-between pt-3 text-black">
-                <span className="text-lg">Price (1 item)</span>
-                <span className="text-lg">$199</span>
+                <span className="text-lg">
+                  Price ({cart.cart?.totalItem} item)
+                </span>
+                <span className="text-lg">${cart.cart?.totalPrice}</span>
               </div>
               <div className="flex justify-between pt-3 text-black">
                 <span className="text-lg">Discount</span>
-                <span className="text-green-600 text-lg">-$199</span>
+                <span className="text-green-600 text-lg">
+                  -${cart.cart?.discount}
+                </span>
               </div>
               <div className="flex justify-between pt-3 text-black">
                 <span className="text-lg">Delivery Charge</span>
@@ -42,7 +56,9 @@ const Cart = () => {
               <Divider></Divider>
               <div className="flex justify-between pt-3 text-black">
                 <span className="font-bold text-xl">Total Amount</span>
-                <span className="font-bold text-xl">$199</span>
+                <span className="font-bold text-xl">
+                  {cart?.cart?.totalDiscountedPrice}
+                </span>
               </div>
               <Button
                 onClick={handleCheckOutButton}

@@ -18,20 +18,25 @@ async function createCart(user) {
 async function findUserCart(user) {
   try {
     let cart = await Cart.findOne({ user: user.id });
-    let cartItems = await CartItem.find({ cart: cart._id }).populate("product");
+    let cartItems = await CartItem.find({ cart: cart.id }).populate("product");
     cart.cartItems = cartItems;
 
+    // let discount = 0;
     let totalPrice = 0;
     let totalDiscountedPrice = 0;
+    let totalDiscount = 0;
     let totalItem = 0;
 
     for (let cartItem of cart.cartItems) {
+      discount = cartItem.price - cartItem.discountedPrice;
       totalPrice += cartItem.price;
+      totalDiscount += discount;
       totalDiscountedPrice += cartItem.discountedPrice;
       totalItem += cartItem.quantity;
     }
 
     cart.totalPrice = totalPrice;
+    cart.discount = totalDiscount;
     cart.totalDiscountedPrice = totalDiscountedPrice;
     cart.totalItem = totalItem;
 

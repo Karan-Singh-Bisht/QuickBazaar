@@ -11,7 +11,9 @@ export const loginUser = createAsyncThunk(
         `${API_BASE_URL}/api/v1/auth/signin`,
         credentials
       );
-      localStorage.setItem("token", response.data.token); // Store token
+      const token = response.data.token;
+      localStorage.setItem("token", token); // Store token
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "Login failed.");
@@ -63,10 +65,18 @@ export const getUser = createAsyncThunk(
 
 // Async thunk for logout
 export const logoutUser = createAsyncThunk(
-  "/logoutUser",
+  "auth/logoutUser",
   async (_, { dispatch }) => {
-    localStorage.clear();
-    dispatch(resetAuth()); // Reset state
+    try {
+      localStorage.clear();
+
+      dispatch(resetAuth());
+
+      return { success: true };
+    } catch (error) {
+      console.error("Logout failed:", error);
+      throw error;
+    }
   }
 );
 

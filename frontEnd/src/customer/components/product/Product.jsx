@@ -33,6 +33,7 @@ import SortIcon from "@mui/icons-material/Sort";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../../state/Product/productSlice";
+import { Pagination } from "@mui/material";
 
 const sortOptions = [
   { name: "Price: Low to High", href: "#", current: false },
@@ -50,7 +51,6 @@ export default function Product() {
   const param = useParams();
 
   const product = useSelector((state) => state.product);
-
   const dispatch = useDispatch();
 
   const decodedQueryString = decodeURIComponent(location.search);
@@ -94,6 +94,14 @@ export default function Product() {
     navigate({ search: `?${query}` });
   };
 
+  const handlePaginationChange = (e, value) => {
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("page", value);
+    const query = searchParams.toString();
+    console.log(query);
+    navigate({ search: `?${query}` });
+  };
+
   useEffect(() => {
     const [minPrice, maxPrice] =
       priceValue === null ? [0, 10000] : priceValue.split("-").map(Number);
@@ -107,7 +115,7 @@ export default function Product() {
       stock: stock,
       sort: sortValue || "price_low",
       pageNumber: pageNumber - 1,
-      pageSize: 10, //How many products to show in 1 page
+      pageSize: 6, //How many products to show in 1 page
     };
     {
     }
@@ -443,6 +451,15 @@ export default function Product() {
                     ))}
                 </div>
               </div>
+            </div>
+          </section>
+          <section className="w-full px-[3.6rem]">
+            <div className="px-4 py-5 justify-center flex">
+              <Pagination
+                count={product?.totalPages}
+                color="secondary"
+                onChange={handlePaginationChange}
+              />
             </div>
           </section>
         </main>

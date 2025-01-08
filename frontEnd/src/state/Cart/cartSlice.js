@@ -21,7 +21,7 @@ export const addItemToCart = createAsyncThunk(
   "cart/addItemToCart",
   async (item, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post(`/api/v1/cart/add`, item);
+      const response = await axiosInstance.put(`/api/v1/cart/add`, item);
       return response.data; // Return the updated cart data
     } catch (err) {
       return rejectWithValue(err.response?.data);
@@ -88,7 +88,7 @@ const cartSlice = createSlice({
       })
       .addCase(getCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cart = action.payload.cart; // Store cart metadata
+        state.cart = action.payload;
         state.cartItems = action.payload.cartItems; // Store cart items
       })
       .addCase(getCart.rejected, (state, action) => {
@@ -103,14 +103,24 @@ const cartSlice = createSlice({
       })
       .addCase(addItemToCart.fulfilled, (state, action) => {
         state.loading = false;
+        const item = action.payload.item;
+
+        // Check if item is valid
+        if (!item || !item._id) {
+          return; // Exit early if the item is invalid
+        }
+
         // Add new item or update if it already exists
         const existingItemIndex = state.cartItems.findIndex(
-          (item) => item.id === action.payload.item.id
+          (cartItem) => cartItem._id === item._id
         );
+
         if (existingItemIndex >= 0) {
-          state.cartItems[existingItemIndex] = action.payload.item;
+          // Update the existing item in the cart
+          state.cartItems[existingItemIndex] = item;
         } else {
-          state.cartItems.push(action.payload.item);
+          // Add the new item to the cart
+          state.cartItems.push(item);
         }
       })
       .addCase(addItemToCart.rejected, (state, action) => {
