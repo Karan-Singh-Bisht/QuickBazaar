@@ -13,7 +13,7 @@ const createOrder = async (req, res) => {
 const findOrderById = async (req, res) => {
   try {
     const orderId = req.params.orderId;
-    const order = await orderService.getOrderById(orderId);
+    const order = await orderService.findOrderById(orderId);
     return res.status(200).json(order);
   } catch (err) {
     return res.status(500).json({ message: err.message });

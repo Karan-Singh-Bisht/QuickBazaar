@@ -12,7 +12,7 @@ async function createOrder(user, shipAddress) {
   } else {
     address = new Address(shipAddress);
     address.user = user.id;
-    await address.save(); //ERRROR -> user.address is undefined
+    await address.save();
     const originalUser = await userService.findUserById(user.id);
     originalUser.address.push(address);
     await originalUser.save();
@@ -132,6 +132,7 @@ module.exports = {
   confirmOrder,
   getAllOrders,
   usersOrderHistory,
+  findOrderById,
   cancelledOrder,
   shipOrder,
   deliveredOrder,

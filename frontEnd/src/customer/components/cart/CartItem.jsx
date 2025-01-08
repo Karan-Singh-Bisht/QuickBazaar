@@ -29,17 +29,17 @@ const CartItem = ({ item }) => {
         <div className="w-[5rem] h-[5rem] lg:w-[9rem] lg:h-[9rem]">
           <img
             className="w-full h-full object-cover object-top"
-            src={item.product?.imageUrl}
-            alt={item.product?.brand}
+            src={item?.product?.imageUrl}
+            alt={item?.product?.brand}
           />
         </div>
         <div></div>
         <div className="ml-5 space-y-1">
-          <p className="font-semibold">{item.product?.title}</p>
+          <p className="font-semibold">{item?.product?.title}</p>
           <p className="opacity-70">
-            Size:{item?.size},{item.product?.color}
+            Size:{item?.size},{item?.product?.color}
           </p>
-          <p className="opacity-70 mt-2">Seller: {item.product?.brand}</p>
+          <p className="opacity-70 mt-2">Seller: {item?.product?.brand}</p>
           <div className="flex space-x-5 items-center pt-6 lg:text-xl text-gray-900 mt-6">
             <p className="font-semibold">
               &#8377;
@@ -50,7 +50,7 @@ const CartItem = ({ item }) => {
               {item?.price}
             </p>
             <p className=" text-green-500 font-semibold">
-              {item.product?.discountPersent}%
+              {item?.product?.discountPersent}%
             </p>
           </div>
         </div>
@@ -59,11 +59,11 @@ const CartItem = ({ item }) => {
         <div className="flex items-center space-x-2">
           <IconButton
             onClick={() => handleUpdateCartItem(-1)}
-            disabled={item.quantity <= 1}
+            disabled={item?.quantity <= 1}
           >
             <RemoveCircleOutlineIcon />
           </IconButton>
-          <span className="py-1 px-7 border rounded-sm">{item.quantity}</span>
+          <span className="py-1 px-7 border rounded-sm">{item?.quantity}</span>
           <IconButton
             onClick={() => handleUpdateCartItem(1)}
             sx={{ color: "RGB(145 85 253)" }}

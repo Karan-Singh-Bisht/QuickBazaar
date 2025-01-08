@@ -19,9 +19,12 @@ export const getOrder = createAsyncThunk(
 // Create a new order
 export const createOrder = createAsyncThunk(
   "/order/createOrder",
-  async ({ address }, { rejectWithValue }) => {
+  async ({ address, navigate }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/api/v1/orders", { address });
+      const response = await axiosInstance.post("/api/v1/orders", address);
+      if (response.data._id) {
+        navigate({ search: `step=3&orderId=${response.data._id}` });
+      }
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -87,9 +90,9 @@ const orderSlice = createSlice({
       })
       .addCase(getOrder.fulfilled, (state, action) => {
         state.loading = false;
-        state.order = action.payload.order; // Store the fetched order details
+        state.order = action.payload._id;
+        state.orders = action.payload;
         state.error = null;
-        state.loading = false;
       })
       .addCase(getOrder.rejected, (state, action) => {
         state.loading = false;

@@ -16,7 +16,7 @@ export default function Checkout() {
   const location = useLocation();
   const querySearch = new URLSearchParams(location.search);
 
-  const step = querySearch.get("step");
+  const step = Number(querySearch.get("step"));
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -30,7 +30,7 @@ export default function Checkout() {
             const stepProps = {};
             const labelProps = {};
             return (
-              <Step key={label} {...stepProps}>
+              <Step key={index} {...stepProps}>
                 <StepLabel {...labelProps}>{label}</StepLabel>
               </Step>
             );

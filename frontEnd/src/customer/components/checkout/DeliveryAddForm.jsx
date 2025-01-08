@@ -2,6 +2,9 @@ import { Box, Button, Grid, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { z } from "zod";
 import { AddressCard } from "./AddressCard";
+import { useDispatch } from "react-redux";
+import { createOrder } from "../../../state/Order/orderSlice";
+import { useNavigate } from "react-router-dom";
 
 // Zod Schema for validation
 const addressSchema = z.object({
@@ -13,13 +16,15 @@ const addressSchema = z.object({
   city: z.string().min(2, { message: "City is required" }),
   state: z.string().min(2, { message: "State is required" }),
   zipCode: z.string(),
-  phoneNumber: z
+  mobile: z
     .string()
     .regex(/^\d{10}$/, { message: "Phone number must be 10 digits" }),
 });
 
 const DeliveryAddForm = () => {
+  const navigate = useNavigate();
   const [errors, setErrors] = useState({});
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,17 +33,18 @@ const DeliveryAddForm = () => {
     const address = {
       firstName: data.get("firstName"),
       lastName: data.get("lastName"),
-      address: data.get("address"),
+      streetAddress: data.get("streetAddress"),
       city: data.get("city"),
       state: data.get("state"),
       zipCode: data.get("zip"),
-      phoneNumber: data.get("phoneNumber"),
+      mobile: data.get("phoneNumber"),
     };
+
+    console.log(address);
 
     // Validate data using Zod
     try {
       addressSchema.parse(address);
-      console.log(address);
       setErrors({}); // Clear errors if valid
     } catch (err) {
       const formattedErrors = err.errors.reduce((acc, error) => {
@@ -47,6 +53,7 @@ const DeliveryAddForm = () => {
       }, {});
       setErrors(formattedErrors); // Set errors
     }
+    dispatch(createOrder({ address: address, navigate }));
   };
 
   return (
@@ -100,8 +107,8 @@ const DeliveryAddForm = () => {
                 <Grid item xs={12}>
                   <TextField
                     required
-                    id="address"
-                    name="address"
+                    id="streetAddress"
+                    name="streetAddress"
                     label="Address"
                     fullWidth
                     autoComplete="street-address"
@@ -156,8 +163,8 @@ const DeliveryAddForm = () => {
                     fullWidth
                     type="tel"
                     autoComplete="tel"
-                    error={!!errors.phoneNumber}
-                    helperText={errors.phoneNumber}
+                    error={!!errors.mobile}
+                    helperText={errors.mobile}
                   />
                 </Grid>
                 <Grid item xs={12}>
