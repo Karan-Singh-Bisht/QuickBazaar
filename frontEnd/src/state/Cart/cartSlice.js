@@ -49,6 +49,7 @@ export const updateCartItem = createAsyncThunk(
   "cart/updateCartItem",
   async ({ itemId, quantity }, { rejectWithValue }) => {
     try {
+      console.log(itemId, quantity);
       const response = await axiosInstance.put(`/api/v1/cartItems/${itemId}`, {
         quantity,
       });
@@ -135,9 +136,7 @@ const cartSlice = createSlice({
       })
       .addCase(removeItemFromCart.fulfilled, (state, action) => {
         state.loading = false;
-        state.cartItems = state.cartItems.filter(
-          (item) => item.id !== action.payload
-        );
+        state.deleteCartItem = action.payload;
       })
       .addCase(removeItemFromCart.rejected, (state, action) => {
         state.loading = false;
@@ -151,12 +150,7 @@ const cartSlice = createSlice({
       })
       .addCase(updateCartItem.fulfilled, (state, action) => {
         state.loading = false;
-        const itemIndex = state.cartItems.findIndex(
-          (item) => item.id === action.payload.item.id
-        );
-        if (itemIndex >= 0) {
-          state.cartItems[itemIndex] = action.payload.item;
-        }
+        state.updateCartItem = action.payload;
       })
       .addCase(updateCartItem.rejected, (state, action) => {
         state.loading = false;
