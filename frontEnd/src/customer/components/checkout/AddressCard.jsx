@@ -5,19 +5,15 @@ export const AddressCard = ({ orderDetails }) => {
     <div>
       <div className="space-y-3">
         <p className="font-semibold">
-          {orderDetails?.orders?.shippingAddress?.firstName +
-            " " +
-            orderDetails?.orders?.shippingAddress?.lastName}
+          {orderDetails?.firstName + " " + orderDetails?.lastName}
         </p>
         <p>
-          {orderDetails?.orders?.shippingAddress?.streetAddress},
-          {orderDetails?.orders?.shippingAddress?.city},
-          {orderDetails?.orders?.shippingAddress?.state},
-          {orderDetails?.orders?.shippingAddress?.zipCode}
+          {orderDetails?.streetAddress},{orderDetails?.city},
+          {orderDetails?.state},{orderDetails?.zipCode}
         </p>
         <div className="space-y-1">
           <p className="font-semibold">Phone Number</p>
-          <p>{orderDetails?.orders?.shippingAddress?.mobile}</p>
+          <p>{orderDetails?.mobile}</p>
         </div>
       </div>
     </div>

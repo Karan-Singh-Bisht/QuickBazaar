@@ -114,11 +114,9 @@ export default function Product() {
       minDiscount: discount || 0,
       stock: stock,
       sort: sortValue || "price_low",
-      pageNumber: pageNumber - 1,
-      pageSize: 6, //How many products to show in 1 page
+      pageNumber: pageNumber,
+      pageSize: 10, //How many products to show in 1 page
     };
-    {
-    }
     dispatch(fetchProducts(data));
   }, [
     param.lavelThree,

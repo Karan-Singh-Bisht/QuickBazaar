@@ -9,6 +9,7 @@ import ProductDetails from "../customer/components/productDetails/ProductDetails
 import Checkout from "../customer/components/checkout/Checkout";
 import Order from "../customer/components/order/Order";
 import OrderDetails from "../customer/components/order/OrderDetails";
+import Payment from "../customer/components/payment/Payment";
 
 const CustomerRoutes = () => {
   return (
@@ -33,6 +34,7 @@ const CustomerRoutes = () => {
           path="/account/order/:orderId"
           element={<OrderDetails />}
         ></Route>{" "}
+        <Route path="/payment/:orderId" element={<Payment />}></Route>
         //See a particular order
       </Routes>
       <div>

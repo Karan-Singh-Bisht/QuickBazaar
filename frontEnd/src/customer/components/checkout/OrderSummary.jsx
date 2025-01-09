@@ -5,7 +5,8 @@ import { Divider } from "@mui/material";
 import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrder } from "../../../state/Order/orderSlice";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { createPayment } from "../../../state/Payment/paymentSlice";
 
 const OrderSummary = () => {
   const dispatch = useDispatch();
@@ -22,10 +23,16 @@ const OrderSummary = () => {
   let totalPrice =
     order?.orders?.totalPrice - order?.orders?.totalDiscountedPrice;
 
+  const handleCheckOut = (orderId) => {
+    dispatch(createPayment(orderId));
+  };
+
   return (
     <div>
       <div className="p-5 shadow-lg rounded-md border">
-        <AddressCard orderDetails={order}></AddressCard>
+        <AddressCard
+          orderDetails={order?.orders?.shippingAddress}
+        ></AddressCard>
       </div>
       <div>
         <div className="lg:grid grid-cols-3 mt-10 lg:px-16 relative">
@@ -82,6 +89,7 @@ const OrderSummary = () => {
                     bgcolor: "#9155fd",
                     mt: "2rem",
                   }}
+                  onClick={() => handleCheckOut(orderId)}
                 >
                   Checkout
                 </Button>

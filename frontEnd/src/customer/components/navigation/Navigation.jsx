@@ -429,7 +429,7 @@ export default function Navigation() {
                       >
                         {auth.user?.user?.firstName[0].toUpperCase()}
                       </Avatar>{" "}
-                      <Button
+                      {/* <Button
                         id="basic-button"
                         aria-controls={open ? "basic-menu" : undefined}
                         aria-haspopup="true"
@@ -437,7 +437,7 @@ export default function Navigation() {
                         onClick={handleUserClick}
                       >
                         Dashboard
-                      </Button>
+                      </Button> */}
                       <Menu
                         id="basic-menu"
                         anchorEl={anchorEl}

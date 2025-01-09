@@ -2,7 +2,7 @@ import { Box, Button, Grid, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { z } from "zod";
 import { AddressCard } from "./AddressCard";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "../../../state/Order/orderSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -25,22 +25,21 @@ const DeliveryAddForm = () => {
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
+  const auth = useSelector((state) => state.auth);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
 
     const address = {
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      streetAddress: data.get("streetAddress"),
-      city: data.get("city"),
-      state: data.get("state"),
-      zipCode: data.get("zip"),
-      mobile: data.get("phoneNumber"),
+      firstName: data?.get("firstName"),
+      lastName: data?.get("lastName"),
+      streetAddress: data?.get("streetAddress"),
+      city: data?.get("city"),
+      state: data?.get("state"),
+      zipCode: data?.get("zip"),
+      mobile: data?.get("phoneNumber"),
     };
-
-    console.log(address);
 
     // Validate data using Zod
     try {
@@ -66,7 +65,7 @@ const DeliveryAddForm = () => {
           className="border rounded-md shadow-md h-[30.5rem] overflow-y-scroll"
         >
           <div className="p-5 py-7 border-b cursor-pointer">
-            <AddressCard />
+            {auth && <AddressCard orderDetails={auth.user?.user} />}
             <Button
               sx={{ mt: 2, bgcolor: "RGB(145 85 253)" }}
               size="large"
