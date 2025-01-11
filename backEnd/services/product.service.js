@@ -1,7 +1,7 @@
 const Category = require("../models/category.model");
 const Product = require("../models/product.model");
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId; // Import ObjectId
+const ObjectId = mongoose.Types.ObjectId;
 
 async function createProduct(reqData) {
   let topLevel = await Category.findOne({ name: reqData.topLavelCategory });
@@ -103,7 +103,7 @@ async function getAllProducts(reqQuery) {
     // Category filter
     if (category) {
       const existCategory = await Category.findOne({ name: category });
-      console.log(existCategory);
+
       if (existCategory) {
         query = query.where("category").equals(existCategory._id);
       } else {

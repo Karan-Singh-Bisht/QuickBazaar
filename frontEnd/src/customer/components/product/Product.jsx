@@ -115,7 +115,7 @@ export default function Product() {
       stock: stock,
       sort: sortValue || "price_low",
       pageNumber: pageNumber,
-      pageSize: 10, //How many products to show in 1 page
+      pageSize: 8, //How many products to show in 1 page
     };
     dispatch(fetchProducts(data));
   }, [
