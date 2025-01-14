@@ -13,7 +13,7 @@ const verifyUserToken = require("../middlewares/verifyUserToken");
 
 router.post("/", verifyUserToken, createProduct);
 router.post("/create", verifyUserToken, createMultipleProduct);
-router.delete("/:productId", verifyUserToken, deleteProduct);
+router.delete("/:productId/delete", verifyUserToken, deleteProduct);
 router.put("/:productId", verifyUserToken, updateProduct);
 
 module.exports = router;

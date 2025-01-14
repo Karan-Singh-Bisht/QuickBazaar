@@ -15,6 +15,6 @@ router.put("/:orderId/confirmed", verifyUserToken, confirmedOrder);
 router.put("/:orderId/shipped", verifyUserToken, shippedOrder);
 router.put("/:orderId/deliver", verifyUserToken, deliveredOrder);
 router.put("/:orderId/cancel", verifyUserToken, cancelledOrder);
-router.put("/:orderId/delete", verifyUserToken, deleteOrder);
+router.delete("/:orderId/delete", verifyUserToken, deleteOrder);
 
 module.exports = router;

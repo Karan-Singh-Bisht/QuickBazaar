@@ -17,9 +17,7 @@ const TrophyImage = styled("img")({
 
 const Achievements = () => {
   return (
-    <Card
-      sx={{ position: "relative", color: "white", bgcolor: "#9792c0", mt: 3 }}
-    >
+    <Card sx={{ position: "relative", color: "white", bgcolor: "#242B2E" }}>
       <CardContent>
         <Typography variant="h6" sx={{ letterSpacing: ".25px" }}>
           QuickBazaar

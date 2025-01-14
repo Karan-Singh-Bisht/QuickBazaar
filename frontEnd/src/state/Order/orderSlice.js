@@ -34,41 +34,6 @@ export const createOrder = createAsyncThunk(
   }
 );
 
-// Update an order (e.g., change order status)
-// export const updateOrder = createAsyncThunk(
-//   "/order/updateOrder",
-//   async ({ orderId, orderData }, { rejectWithValue }) => {
-//     try {
-//       const response = await axiosInstance.put(
-//         `/api/v1/orders/${orderId}`,
-//         orderData
-//       );
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(
-//         error.response?.data?.message || "Failed to update order."
-//       );
-//     }
-//   }
-// );
-
-// Cancel an order
-// export const cancelOrder = createAsyncThunk(
-//   "/order/cancelOrder",
-//   async (orderId, { rejectWithValue }) => {
-//     try {
-//       const response = await axiosInstance.delete(
-//         `/api/v1/orders/${orderId}/cancel`
-//       );
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(
-//         error.response?.data?.message || "Failed to cancel order."
-//       );
-//     }
-//   }
-// );
-
 // Initial state for the order slice
 const initialState = {
   order: null,
@@ -112,41 +77,6 @@ const orderSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       });
-
-    // Handle updating an order
-    // .addCase(updateOrder.pending, (state) => {
-    //   state.loading = true;
-    //   state.error = null;
-    // })
-    // .addCase(updateOrder.fulfilled, (state, action) => {
-    //   state.loading = false;
-    //   const index = state.orders.findIndex(
-    //     (order) => order.id === action.payload.order.id
-    //   );
-    //   if (index !== -1) {
-    //     state.orders[index] = action.payload.order; // Update the existing order in the list
-    //   }
-    // })
-    // .addCase(updateOrder.rejected, (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.payload;
-    // })
-
-    // // Handle canceling an order
-    // .addCase(cancelOrder.pending, (state) => {
-    //   state.loading = true;
-    //   state.error = null;
-    // })
-    // .addCase(cancelOrder.fulfilled, (state, action) => {
-    //   state.loading = false;
-    //   state.orders = state.orders.filter(
-    //     (order) => order.id !== action.payload.order.id
-    //   ); // Remove the canceled order from the list
-    // })
-    // .addCase(cancelOrder.rejected, (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.payload;
-    // });
   },
 });
 

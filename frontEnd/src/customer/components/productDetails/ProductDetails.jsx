@@ -92,7 +92,6 @@ export default function ProductDetails() {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      console.log("Fetching product with ID:", productId);
       dispatch(findProductById(productId));
     };
     fetchProduct();

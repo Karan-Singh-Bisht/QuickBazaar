@@ -60,7 +60,7 @@ async function createProduct(reqData) {
 }
 
 async function deleteProduct(productId) {
-  const product = await Product.findProductById(productId);
+  const product = await Product.findById(productId);
   if (!product) {
     throw new Error("Product not found");
   }
@@ -73,6 +73,9 @@ async function updateProduct(productId, reqData) {
 }
 
 async function findProductById(productId) {
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    throw new Error("Invalid Product ID");
+  }
   const product = await Product.findById(productId).populate("category").exec();
   if (!product) {
     throw new Error("Product not found");
