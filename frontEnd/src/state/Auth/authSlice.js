@@ -8,7 +8,7 @@ export const loginUser = createAsyncThunk(
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `${API_BASE_URL}/api/v1/auth/signin`,
+        `https://quickbazaar-acyq.onrender.com/api/v1/auth/signin`,
         credentials
       );
       const token = response.data.token;
