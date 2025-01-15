@@ -18,7 +18,7 @@ const createPaymentLink = async (orderId) => {
         email: true,
       },
       reminder_enable: true,
-      callback_url: `https://quick-bazaar-afkg5khzs-karan-singh-bishts-projects.vercel.app/payment/${orderId}`,
+      callback_url: `https://quick-bazaar-msdtxous3-karan-singh-bishts-projects.vercel.app//payment/${orderId}`,
       callback_method: "get",
     };
     const paymentLink = await razorpay.paymentLink.create(paymentLinkRequest);

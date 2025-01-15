@@ -11,6 +11,7 @@ const corsOptions = {
   origin: [
     "https://quick-bazaar-afkg5khzs-karan-singh-bishts-projects.vercel.app",
     "https://quick-bazaar-git-main-karan-singh-bishts-projects.vercel.app",
+    "https://quick-bazaar-msdtxous3-karan-singh-bishts-projects.vercel.app",
   ],
   credentials: true,
   maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
