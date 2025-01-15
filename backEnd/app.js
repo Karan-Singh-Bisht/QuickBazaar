@@ -8,7 +8,8 @@ const db = require("./config/db");
 db();
 
 const corsOptions = {
-  origin: "*",
+  origin:
+    "https://quick-bazaar-k3t1e080d-karan-singh-bishts-projects.vercel.app",
   credentials: true,
   maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
 };
