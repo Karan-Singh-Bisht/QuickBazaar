@@ -4,11 +4,11 @@ import { API_BASE_URL } from "../../config/apiConfig";
 
 // Async thunk for login
 export const loginUser = createAsyncThunk(
-  "/login",
+  "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `https://quickbazaar-acyq.onrender.com/api/v1/auth/signin`,
+        `${API_BASE_URL}/api/v1/auth/signin`,
         credentials
       );
       const token = response.data.token;
