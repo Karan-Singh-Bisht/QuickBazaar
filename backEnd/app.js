@@ -8,7 +8,7 @@ const db = require("./config/db");
 db();
 
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "*",
   credentials: true,
   maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
 };
