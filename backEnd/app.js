@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+const cron = require("node-cron");
 const db = require("./config/db");
 db();
 
@@ -11,6 +12,11 @@ const corsOptions = {
   credentials: true,
   maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
 };
+
+cron.schedule("*/5 * * * *", () => {
+  exec("curl https://quickbazaar-acyq.onrender.com");
+  console.log("Corn running....");
+});
 
 app.use(cookieParser());
 app.use(cors(corsOptions));

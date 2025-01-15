@@ -33,7 +33,7 @@ import SortIcon from "@mui/icons-material/Sort";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../../../state/Product/productSlice";
-import { Pagination } from "@mui/material";
+import { Button, Pagination } from "@mui/material";
 
 const sortOptions = [
   { name: "Price: Low to High", href: "#", current: false },
@@ -49,7 +49,7 @@ export default function Product() {
   const location = useLocation();
   const navigate = useNavigate();
   const param = useParams();
-
+  const auth = useSelector((state) => state.auth);
   const product = useSelector((state) => state.product);
   const dispatch = useDispatch();
 
@@ -98,7 +98,7 @@ export default function Product() {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("page", value);
     const query = searchParams.toString();
-    console.log(query);
+
     navigate({ search: `?${query}` });
   };
 
@@ -441,13 +441,22 @@ export default function Product() {
               </div>
 
               {/* Product grid */}
+
               <div className="lg:col-span-3 w-full">
-                <div className="flex flex-wrap justify-center bg-white py-5">
-                  {product.products &&
-                    product.products?.map((item, index) => (
-                      <ProductCard data={item} key={index} />
-                    ))}
-                </div>
+                {auth == "true" ? (
+                  <div className="flex flex-wrap justify-center bg-white py-5">
+                    {product.products &&
+                      product.products?.map((item, index) => (
+                        <ProductCard data={item} key={index} />
+                      ))}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center text-center h-[50vh] ">
+                    <p className="text-xl font-semibold">
+                      Please Register or Login
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </section>
