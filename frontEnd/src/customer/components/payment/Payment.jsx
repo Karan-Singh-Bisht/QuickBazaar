@@ -13,11 +13,10 @@ const Payment = () => {
   const [paymentStatus, SetPaymentStatus] = useState();
   const params = useParams();
   const orderId = params.orderId;
-  console.log(orderId);
 
   useEffect(() => {
     const urlParam = new URLSearchParams(window.location.search);
-    console.log(urlParam.get("razorpay_payment_id"));
+
     SetPaymentId(urlParam.get("razorpay_payment_id"));
     SetPaymentStatus(urlParam.get("razorpay_payment_link_status"));
   }, []);
@@ -26,12 +25,10 @@ const Payment = () => {
     if (paymentId) {
       const data = { orderId, paymentId };
       dispatch(updatePayment(data));
-      console.log("DOne");
     }
     dispatch(getOrder({ orderId: orderId }));
   }, [orderId, paymentId]);
   const order = useSelector((state) => state.order);
-  console.log("order:", order);
 
   return (
     <div className="px-2 lg:px-36">

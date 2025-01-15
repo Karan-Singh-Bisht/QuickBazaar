@@ -101,7 +101,6 @@ export default function ProductDetails() {
 
   const handleAddToCart = () => {
     const data = { productId: params.productId, size: selectedSize.name };
-    console.log(data);
     dispatch(addItemToCart(data));
     navigate("/cart");
   };
@@ -109,44 +108,6 @@ export default function ProductDetails() {
   return (
     <div className="bg-white lg:px-20">
       <div className="pt-6">
-        {/* <nav aria-label="Breadcrumb"> */}
-        {/* <ol */}
-        role="list" className="mx-auto flex max-w-2xl items-center space-x-2
-        px-4 sm:px-6 lg:max-w-7xl lg:px-8"
-        {/* > */}
-        {/* {product.breadcrumbs.map((breadcrumb) => (
-              <li key={breadcrumb.id}>
-                <div className="flex items-center">
-                  <a
-                    href={breadcrumb.href}
-                    className="mr-2 text-sm font-medium text-gray-900"
-                  >
-                    {breadcrumb.name}
-                  </a>
-                  <svg
-                    fill="currentColor"
-                    width={16}
-                    height={20}
-                    viewBox="0 0 16 20"
-                    aria-hidden="true"
-                    className="h-5 w-4 text-gray-300"
-                  >
-                    <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-                  </svg>
-                </div>
-              </li>
-            ))} */}
-        {/* <li className="text-sm">
-              <a
-                href={product.href}
-                aria-current="page"
-                className="font-medium text-gray-500 hover:text-gray-600"
-              >
-                {product.name}
-              </a> */}
-        {/* </li> */}
-        {/* </ol> */}
-        {/* </nav> */}
         <section className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-10 px-4 pt-10">
           {/* Image gallery */}
           <div className="flex flex-col items-center">

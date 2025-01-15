@@ -5,7 +5,6 @@ import { axiosInstance } from "../../config/apiConfig";
 export const createPayment = createAsyncThunk(
   "payment/createOrder",
   async (orderId, { rejectWithValue }) => {
-    console.log(orderId);
     try {
       const response = await axiosInstance.post(`/api/v1/payments/${orderId}`);
       if (response.data.paymentLinkUrl) {

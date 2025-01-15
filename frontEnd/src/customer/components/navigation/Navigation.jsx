@@ -250,10 +250,6 @@ export default function Navigation() {
       </Transition.Root>
 
       <header className="relative bg-white">
-        <p className="flex h-10 items-center justify-center bg-indigo-600 px-4 text-sm font-medium text-white sm:px-6 lg:px-8">
-          Get free delivery on orders over $100
-        </p>
-
         <nav aria-label="Top" className="mx-auto">
           <div className="border-b border-gray-200">
             <div className="flex h-16 items-center px-11">
@@ -269,12 +265,8 @@ export default function Navigation() {
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
                 <Link to="/">
-                  <span className="sr-only">Your Company</span>
-                  <img
-                    src="https://res.cloudinary.com/ddkso1wxi/image/upload/v1675919455/Logo/Copy_of_Zosh_Academy_nblljp.png"
-                    alt="Shopwithzosh"
-                    className="h-8 w-8 mr-2"
-                  />
+                  <span className="sr-only">Quick Bazaar</span>
+                  <img src="https://www.qthelabel.com/cdn/shop/files/Q_the_label_garforth_1.png?v=1702572445&width=50"></img>
                 </Link>
               </div>
 

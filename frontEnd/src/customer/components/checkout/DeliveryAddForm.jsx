@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 const addressSchema = z.object({
   firstName: z.string().min(2, { message: "First Name is required" }),
   lastName: z.string().min(2, { message: "Last Name is required" }),
-  address: z
+  streetAddress: z
     .string()
     .min(5, { message: "Address must be at least 5 characters" }),
   city: z.string().min(2, { message: "City is required" }),
@@ -58,13 +58,13 @@ const DeliveryAddForm = () => {
   return (
     <div>
       <Grid container spacing={4}>
-        <Grid
+        {/* <Grid
           item
           xs={12}
           lg={5}
           className="border rounded-md shadow-md h-[30.5rem] overflow-y-scroll"
-        >
-          <div className="p-5 py-7 border-b cursor-pointer">
+        > */}
+        {/* <div className="p-5 py-7 border-b cursor-pointer">
             {auth && <AddressCard orderDetails={auth.user?.user} />}
             <Button
               sx={{ mt: 2, bgcolor: "RGB(145 85 253)" }}
@@ -73,9 +73,9 @@ const DeliveryAddForm = () => {
             >
               Deliver Here
             </Button>
-          </div>
-        </Grid>
-        <Grid item xs={12} lg={7}>
+          </div> */}
+        {/* </Grid> */}
+        <Grid item xs={12} lg={12}>
           <Box className="border rounded-s-md p-5 shadow-md">
             <form onSubmit={handleSubmit}>
               <Grid container spacing={3}>

@@ -65,7 +65,7 @@ const OrderTable = () => {
   return (
     <div>
       <Card className="mt-2">
-        <CardHeader title="All Orders" />
+        <CardHeader title="Recent Orders" />
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -75,8 +75,6 @@ const OrderTable = () => {
                 <TableCell align="left">Order ID</TableCell>
                 <TableCell align="left">Price</TableCell>
                 <TableCell align="left">Status</TableCell>
-                <TableCell align="left">Update</TableCell>
-                <TableCell align="left">Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -120,17 +118,6 @@ const OrderTable = () => {
                     </span>
                   </TableCell>
                   <TableCell align="left">
-                    <Button
-                      id="basic-button"
-                      // aria-controls={open ? "basic-menu" : undefined}
-                      aria-haspopup="true"
-                      // aria-expanded={open ? "true" : undefined}
-                      onClick={(e) => handleClick(e, index)}
-                      aria-controls={`basic-menu-${item._id}`}
-                      aria-expanded={Boolean(anchorEl[index])}
-                    >
-                      Status
-                    </Button>
                     <Menu
                       id={`basic-menu-${item._id}`}
                       anchorEl={anchorEl[index]}
@@ -150,14 +137,6 @@ const OrderTable = () => {
                         Order Delivered
                       </MenuItem>
                     </Menu>
-                  </TableCell>
-                  <TableCell align="left">
-                    <Button
-                      onClick={() => handleProductDelete(item._id)}
-                      variant="outlined"
-                    >
-                      Delete
-                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

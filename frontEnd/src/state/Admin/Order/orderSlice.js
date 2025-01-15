@@ -140,7 +140,7 @@ const adminOrderSlice = createSlice({
       .addCase(confirmOrder.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.orders.findIndex(
-          (order) => order.id === action.payload.id
+          (order) => order._id === action.payload._id
         );
         if (index !== -1) {
           state.orders[index] = action.payload; // Update the confirmed order
@@ -171,7 +171,7 @@ const adminOrderSlice = createSlice({
       .addCase(deliverOrder.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.orders.findIndex(
-          (order) => order.id === action.payload.id
+          (order) => order._id === action.payload._id
         );
         if (index !== -1) {
           state.orders[index] = action.payload; // Update the delivered order
@@ -189,7 +189,7 @@ const adminOrderSlice = createSlice({
       .addCase(cancelOrder.fulfilled, (state, action) => {
         state.loading = false;
         const index = state.orders.findIndex(
-          (order) => order.id === action.payload.id
+          (order) => order._id === action.payload._id
         );
         if (index !== -1) {
           state.orders[index] = action.payload; // Update the canceled order
@@ -207,7 +207,7 @@ const adminOrderSlice = createSlice({
       .addCase(deleteOrder.fulfilled, (state, action) => {
         state.loading = false;
         state.orders = state.orders.filter(
-          (order) => order.id !== action.payload
+          (order) => order._id !== action.payload
         );
       })
       .addCase(deleteOrder.rejected, (state, action) => {
@@ -222,7 +222,7 @@ const adminOrderSlice = createSlice({
         state.loading = false;
 
         const index = state.orders.findIndex(
-          (order) => order.id === action.payload.id // Assuming payload contains an `id`
+          (order) => order._id === action.payload._id
         );
 
         if (index !== -1) {

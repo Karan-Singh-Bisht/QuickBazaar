@@ -108,7 +108,7 @@ const cartSlice = createSlice({
 
         // Check if item is valid
         if (!item || !item._id) {
-          return; // Exit early if the item is invalid
+          return;
         }
 
         // Add new item or update if it already exists

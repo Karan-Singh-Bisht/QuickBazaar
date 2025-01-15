@@ -20,7 +20,6 @@ const LoginForm = () => {
     };
     try {
       const user = await dispatch(loginUser(userData));
-      console.log(user);
     } catch (err) {
       console.error(err);
     }
