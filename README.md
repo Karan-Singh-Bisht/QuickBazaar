@@ -10,8 +10,8 @@ QuickBazaar also features an Admin Page that allows administrators to control al
 QuickBazaar aims to be your go-to marketplace for a wide variety of products, whether you're shopping for everyday essentials or looking for something unique. We are committed to providing a smooth and enjoyable shopping experience, where ease of use meets cutting-edge technology.
 
 Environment Variables:
-PORT: _
-MONGODB_URI: _
-JWT_SECRET_KEY: _
-RAZORPAY_KEY_ID: _
-RAZORPAY_KEY_SECRET: _
+1. PORT:_
+2. MONGODB_URI: _
+3. JWT_SECRET_KEY: _
+4. RAZORPAY_KEY_ID: _
+5. RAZORPAY_KEY_SECRET: _
