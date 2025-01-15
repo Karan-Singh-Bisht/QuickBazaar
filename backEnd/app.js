@@ -8,7 +8,7 @@ const db = require("./config/db");
 db();
 
 const corsOptions = {
-  origin: "https://zippy-caramel-1d31f2.netlify.app",
+  origin: "https://statuesque-heliotrope-0b129d.netlify.app",
   credentials: true,
   maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
 };
