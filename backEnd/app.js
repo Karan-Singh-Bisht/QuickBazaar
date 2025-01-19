@@ -34,6 +34,7 @@ const orderRouter = require("./routes/order.routes");
 const reviewRouter = require("./routes/review.routes");
 const ratingRouter = require("./routes/rating.routes");
 const paymentRouter = require("./routes/payment.routes");
+const groqRouter = require("./routes/groq.routes");
 
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/auth", authRoute);
@@ -46,6 +47,7 @@ app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/ratings", ratingRouter);
 app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/payments", paymentRouter);
+app.use("/api/v1/chat", groqRouter);
 
 const PORT = process.env.PORT || 8080;
 
