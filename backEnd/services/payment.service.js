@@ -18,7 +18,7 @@ const createPaymentLink = async (orderId) => {
         email: true,
       },
       reminder_enable: true,
-      callback_url: `https://statuesque-heliotrope-0b129d.netlify.app/payment/${orderId}`,
+      callback_url: `https://bucolic-rugelach-8be688.netlify.app/payment/${orderId}`,
       callback_method: "get",
     };
     const paymentLink = await razorpay.paymentLink.create(paymentLinkRequest);

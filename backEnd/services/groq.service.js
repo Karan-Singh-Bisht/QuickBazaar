@@ -5,7 +5,6 @@ const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 async function getGroqResponse(message) {
   try {
-    console.log(message);
     const response = await axios.post(
       "https://api.groq.com/openai/v1/chat/completions",
       {
