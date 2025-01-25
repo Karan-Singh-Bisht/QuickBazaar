@@ -20,4 +20,14 @@ const getAllRatings = async (req, res) => {
   }
 };
 
-module.exports = { createRating, getAllRatings };
+const deleteRating = async (req, res) => {
+  try {
+    const ratingId = req.params.ratingId;
+    const response = await ratingService.deleteRating(ratingId);
+    return res.status(200).json({ message: response });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+module.exports = { createRating, getAllRatings, deleteRating };

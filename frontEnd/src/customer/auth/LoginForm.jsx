@@ -3,13 +3,13 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../../state/Auth/authSlice";
-import { Typography } from "@mui/material";
+import { toast } from "sonner";
+import Loading from "../components/loading/Loading";
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const { error, loading } = useSelector((state) => state.auth);
+  const { loading } = useSelector((state) => state.auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,15 +18,16 @@ const LoginForm = () => {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-    try {
-      const user = await dispatch(loginUser(userData));
-    } catch (err) {
-      console.error(err);
+    const user = await dispatch(loginUser(userData));
+    if (user.meta.requestStatus != "rejected") {
+      toast.success(`Welcome ${user.payload.user.firstName}`);
+    } else {
+      toast.error(user.payload);
     }
   };
 
   if (loading) {
-    return <h1>Loading..</h1>;
+    return <Loading />;
   }
 
   return (
@@ -54,13 +55,6 @@ const LoginForm = () => {
               fullWidth
             />
           </Grid>
-          {error && (
-            <Grid item xs={12}>
-              <Typography color="error" variant="body2">
-                {error}
-              </Typography>
-            </Grid>
-          )}
           <Grid item xs={12}>
             <Button
               className="w-full"

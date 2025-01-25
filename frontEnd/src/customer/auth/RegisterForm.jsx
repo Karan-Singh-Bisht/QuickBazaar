@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, registerUser } from "../../state/Auth/authSlice";
 import { Typography } from "@mui/material";
+import { toast } from "sonner";
+import Loading from "../components/loading/Loading";
 
 const RegisterForm = () => {
   const navigate = useNavigate();
@@ -28,16 +30,17 @@ const RegisterForm = () => {
       email: formData.get("email"),
       password: formData.get("password"),
     };
-    try {
-      const user = await dispatch(registerUser(userData));
-      console.log(user);
-    } catch (err) {
-      console.error(err);
+    const user = await dispatch(registerUser(userData));
+    console.log(user);
+    if (user) {
+      toast.success(`Welcome to QuickBazaar ${user.payload.user.firstName}`);
+    } else {
+      toast.error("Registration failed");
     }
   };
 
   if (loading) {
-    return <h1>Loading..</h1>;
+    return <Loading />;
   }
   return (
     <div>

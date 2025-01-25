@@ -31,7 +31,6 @@ const adminProductRoute = require("./routes/adminProduct.routes");
 const cartRouter = require("./routes/cart.routes");
 const cartItemRouter = require("./routes/cartItem.routes");
 const orderRouter = require("./routes/order.routes");
-const reviewRouter = require("./routes/review.routes");
 const ratingRouter = require("./routes/rating.routes");
 const paymentRouter = require("./routes/payment.routes");
 const groqRouter = require("./routes/groq.routes");
@@ -45,7 +44,6 @@ app.use("/api/v1/cart", cartRouter);
 app.use("/api/v1/cartItems", cartItemRouter);
 app.use("/api/v1/orders", orderRouter);
 app.use("/api/v1/ratings", ratingRouter);
-app.use("/api/v1/reviews", reviewRouter);
 app.use("/api/v1/payments", paymentRouter);
 app.use("/api/v1/chat", groqRouter);
 

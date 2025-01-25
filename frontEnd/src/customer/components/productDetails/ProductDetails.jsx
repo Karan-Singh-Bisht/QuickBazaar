@@ -28,6 +28,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { findProductById } from "../../../state/Product/productSlice";
 import { addItemToCart } from "../../../state/Cart/cartSlice";
+import { fetchRatings, resetRatings } from "../../../state/rating/ratingSlice";
+import RatingComponent from "../rating/RatingComponent";
 
 // const product = {
 //   name: "Basic Tee 6-Pack",
@@ -89,12 +91,12 @@ export default function ProductDetails() {
   const params = useParams();
   const dispatch = useDispatch();
   const productId = params.productId;
+  const rating = useSelector((state) => state.rating.ratings);
 
   useEffect(() => {
-    const fetchProduct = async () => {
-      dispatch(findProductById(productId));
-    };
-    fetchProduct();
+    dispatch(findProductById(productId));
+    dispatch(resetRatings());
+    dispatch(fetchRatings(productId));
   }, [productId]);
 
   const product = useSelector((state) => state.product.product);
@@ -104,6 +106,8 @@ export default function ProductDetails() {
     dispatch(addItemToCart(data));
     navigate("/cart");
   };
+
+  const averageRating = rating.reduce((sum, rating) => sum + rating.rating, 0);
 
   return (
     <div className="bg-white lg:px-20">
@@ -165,13 +169,13 @@ export default function ProductDetails() {
               <div className="mt-6 flex items-center space-x-3">
                 <Rating
                   name="half-rating-read"
-                  defaultValue={4.5}
+                  value={averageRating / rating.length}
                   precision={0.5}
                   readOnly
                 />
-                <p className="opacity-50 text-sm">73921 Ratings</p>
+                <p className="opacity-50 text-sm">{rating.length} Ratings</p>
                 <p className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500">
-                  10000 Reviews
+                  {rating.length} Reviews
                 </p>
               </div>
 
@@ -260,29 +264,29 @@ export default function ProductDetails() {
                 </div>
               </div>
 
-              <div className="mt-10">
+              {/* <div className="mt-10">
                 <h3 className="text-sm font-medium text-gray-900">
                   Highlights
                 </h3>
 
                 <div className="mt-4">
-                  {/* <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
+                  <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
                     {product.highlights.map((highlight) => (
                       <li key={highlight} className="text-gray-400">
                         <span className="text-gray-600">{highlight}</span>
                       </li>
                     ))}
-                  </ul> */}
+                  </ul>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="mt-10">
+              {/* <div className="mt-10">
                 <h2 className="text-sm font-medium text-gray-900">Details</h2>
 
                 <div className="mt-4 space-y-6">
-                  {/* <p className="text-sm text-gray-600">{product.details}</p> */}
+                  <p className="text-sm text-gray-600">{product.details}</p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </section>
@@ -293,9 +297,9 @@ export default function ProductDetails() {
             <Grid container spacing={7}>
               <Grid item xs={7}>
                 <div className="space-y-5">
-                  {[1, 1, 1].map((item, index) => (
+                  {rating.map((item, index) => (
                     <div key={index}>
-                      <ProductReviewCard />
+                      <ProductReviewCard item={item} />
                     </div>
                   ))}
                 </div>
@@ -306,10 +310,10 @@ export default function ProductDetails() {
                   <Rating
                     name="half-rating-read"
                     readOnly
-                    value={4.5}
+                    value={averageRating / rating.length}
                     precision={0.5}
                   />
-                  <p className="opacity-60">31790 Ratings</p>
+                  <p className="opacity-60">{rating.length} Ratings</p>
                 </div>
 
                 <Box className="mt-5 space-y-3">
@@ -413,6 +417,7 @@ export default function ProductDetails() {
             </Grid>
           </div>
         </section>
+        <RatingComponent productId={productId} />
         <section className="pt-10">
           <h1 className="py-5 text-xl font-bold">Similar Products</h1>
           <div className="flex space-y-5 gap-10 justify-center flex-wrap">

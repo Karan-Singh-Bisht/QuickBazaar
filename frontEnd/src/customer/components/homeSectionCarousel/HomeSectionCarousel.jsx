@@ -4,9 +4,11 @@ import "react-alice-carousel/lib/alice-carousel.css";
 import ProductCard from "../homeSectionCard/ProductCard";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useNavigate } from "react-router-dom";
 
 const HomeSectionCarousel = ({ data, sectionName }) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
 
   // Create a ref for AliceCarousel
   const carouselRef = useRef(null);

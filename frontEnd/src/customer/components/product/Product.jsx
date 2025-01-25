@@ -441,15 +441,20 @@ export default function Product() {
               </div>
 
               {/* Product grid */}
-
-              <div className="lg:col-span-3 w-full">
-                <div className="flex flex-wrap justify-center bg-white py-5">
-                  {product.products &&
-                    product.products?.map((item, index) => (
-                      <ProductCard data={item} key={index} />
-                    ))}
+              {auth.user != null ? (
+                <div className="lg:col-span-3 w-full">
+                  <div className="flex flex-wrap justify-center bg-white py-5">
+                    {product.products &&
+                      product.products?.map((item, index) => (
+                        <ProductCard data={item} key={index} />
+                      ))}
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="flex w-full justify-center items-center ml-[22vw]">
+                  <h1>Please Register or Reload</h1>
+                </div>
+              )}
             </div>
           </section>
           <section className="w-full px-[3.6rem]">

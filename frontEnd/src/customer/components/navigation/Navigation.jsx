@@ -16,6 +16,7 @@ import AuthModal from "../../auth/AuthModal";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getUser, logoutUser } from "../../../state/Auth/authSlice";
+import { toast } from "sonner";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -74,6 +75,7 @@ export default function Navigation() {
   const handleLogout = () => {
     handleCloseUserMenu();
     dispatch(logoutUser());
+    toast.success("Logged Out Successfully!");
   };
   // const handleMyOrderClick = () => {
   //   handleCloseUserMenu();

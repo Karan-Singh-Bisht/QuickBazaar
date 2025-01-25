@@ -50,7 +50,6 @@ const getUserByEmail = async (email) => {
 
     return user;
   } catch (err) {
-    console.error("Error getting user by email", err.message);
     throw err;
   }
 };

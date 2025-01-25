@@ -55,7 +55,7 @@ const Chatbot = () => {
         <Paper className="chatbot-container">
           {/* Chatbox Header */}
           <div className="chatbot-header">
-            <h3>Chatbot</h3>
+            <h3>Quicky</h3>
             <IconButton onClick={() => setIsOpen(false)}>
               <CloseIcon />
             </IconButton>

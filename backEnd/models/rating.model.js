@@ -16,6 +16,11 @@ const ratingSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    review: {
+      type: String,
+      maxLength: 500,
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -1,10 +1,10 @@
 import { Box, Button, Grid, TextField } from "@mui/material";
 import React, { useState } from "react";
 import { z } from "zod";
-import { AddressCard } from "./AddressCard";
 import { useDispatch, useSelector } from "react-redux";
 import { createOrder } from "../../../state/Order/orderSlice";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 // Zod Schema for validation
 const addressSchema = z.object({
@@ -18,7 +18,8 @@ const addressSchema = z.object({
   zipCode: z.string(),
   mobile: z
     .string()
-    .regex(/^\d{10}$/, { message: "Phone number must be 10 digits" }),
+    .length(10, { message: "Phone number must be exactly 10 digits" })
+    .regex(/^\d+$/, { message: "Phone number must contain only digits" }),
 });
 
 const DeliveryAddForm = () => {
@@ -44,7 +45,9 @@ const DeliveryAddForm = () => {
     // Validate data using Zod
     try {
       addressSchema.parse(address);
-      setErrors({}); // Clear errors if valid
+      setErrors({});
+      toast.success("Successfull!");
+      dispatch(createOrder({ address: address, navigate }));
     } catch (err) {
       const formattedErrors = err.errors.reduce((acc, error) => {
         acc[error.path[0]] = error.message;
@@ -52,7 +55,6 @@ const DeliveryAddForm = () => {
       }, {});
       setErrors(formattedErrors); // Set errors
     }
-    dispatch(createOrder({ address: address, navigate }));
   };
 
   return (
@@ -113,8 +115,8 @@ const DeliveryAddForm = () => {
                     autoComplete="street-address"
                     multiline
                     rows={4}
-                    error={!!errors.address}
-                    helperText={errors.address}
+                    error={!!errors.streetAddress}
+                    helperText={errors.streetAddress}
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
