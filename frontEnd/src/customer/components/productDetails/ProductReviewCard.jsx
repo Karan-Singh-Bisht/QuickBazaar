@@ -7,16 +7,13 @@ import { useEffect } from "react";
 import { toast } from "sonner";
 
 const ProductReviewCard = ({ item }) => {
+  const productId = item.product;
   const dispatch = useDispatch();
-  const { ratings, error, loading, success } = useSelector(
-    (state) => state.rating
-  );
 
   const auth = useSelector((state) => state.auth);
 
   const handleDeleteRating = (ratingId) => {
-    dispatch(deleteRating(ratingId));
-    window.location.reload();
+    dispatch(deleteRating({ ratingId, productId }));
     toast.success("Rating deleted successfully!");
   };
 

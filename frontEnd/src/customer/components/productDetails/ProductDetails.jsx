@@ -95,8 +95,8 @@ export default function ProductDetails() {
 
   useEffect(() => {
     dispatch(findProductById(productId));
-    dispatch(resetRatings());
     dispatch(fetchRatings(productId));
+    // dispatch(resetRatings());
   }, [productId]);
 
   const product = useSelector((state) => state.product.product);

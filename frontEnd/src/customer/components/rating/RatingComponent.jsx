@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   submitRating,
   fetchRatings,
-  resetSuccess,
   resetRatings,
 } from "../../../state/rating/ratingSlice";
 import { toast } from "sonner";
@@ -21,18 +20,10 @@ import {
 
 const RatingComponent = ({ productId }) => {
   const dispatch = useDispatch();
-  const { ratings, loading, error, success } = useSelector(
-    (state) => state.rating
-  );
+  const { ratings, loading, error } = useSelector((state) => state.rating);
 
   const [rating, setRating] = useState(0);
   const [review, setReview] = useState("");
-
-  useEffect(() => {
-    if (success) {
-      dispatch(resetSuccess());
-    }
-  }, [success, dispatch]);
 
   const handleSubmit = () => {
     if (rating === 0) return toast.error("Please provide a rating!");

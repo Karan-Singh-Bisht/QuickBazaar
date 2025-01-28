@@ -1,21 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
 import { axiosInstance } from "../../config/apiConfig";
 
 // Async Thunk for submitting a rating
 export const submitRating = createAsyncThunk(
   "rating/submitRating",
-  async ({ productId, rating, review }, { rejectWithValue }) => {
+  async ({ productId, rating, review }, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosInstance.post(
-        `/api/v1/ratings/createRating`,
-        {
-          productId,
-          rating,
-          review,
-        }
-      );
-      return response.data;
+      await axiosInstance.post(`/api/v1/ratings/createRating`, {
+        productId,
+        rating,
+        review,
+      });
+
+      // Refetch ratings after submission
+      dispatch(fetchRatings(productId));
+
+      return true; // Just return success flag
     } catch (error) {
       return rejectWithValue(error.response?.data || "Something went wrong");
     }
@@ -37,14 +37,19 @@ export const fetchRatings = createAsyncThunk(
   }
 );
 
+// Async Thunk for deleting a rating
 export const deleteRating = createAsyncThunk(
   "rating/deleteRating",
-  async (ratingId, { rejectWithValue }) => {
+  async ({ ratingId, productId }, { rejectWithValue, dispatch }) => {
     try {
       const response = await axiosInstance.delete(
         `/api/v1/ratings/rating/${ratingId}`
       );
-      return response.data;
+
+      // Refetch ratings after deletion
+      dispatch(fetchRatings(productId));
+
+      return response.data; // Ensure API returns `{ deletedId: ratingId }`
     } catch (error) {
       return rejectWithValue(error.response?.data || "Something went wrong");
     }
@@ -58,37 +63,29 @@ const ratingSlice = createSlice({
     ratings: [],
     loading: false,
     error: null,
-    success: false,
   },
   reducers: {
     resetRatings: (state) => {
       state.ratings = [];
-      state.success = false;
       state.error = null;
       state.loading = false;
-    },
-    resetSuccess: (state) => {
-      state.success = false;
     },
   },
   extraReducers: (builder) => {
     builder
-      // Handle submitRating
       .addCase(submitRating.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(submitRating.fulfilled, (state, action) => {
+      .addCase(submitRating.fulfilled, (state) => {
         state.loading = false;
-        state.success = true;
-        state.ratings.push(action.payload);
+        state.error = null;
       })
       .addCase(submitRating.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
 
-      // Handle fetchRatings
       .addCase(fetchRatings.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -101,6 +98,7 @@ const ratingSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
+
       .addCase(deleteRating.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -108,9 +106,8 @@ const ratingSlice = createSlice({
       .addCase(deleteRating.fulfilled, (state, action) => {
         state.loading = false;
         state.ratings = state.ratings.filter(
-          (rating) => rating._id !== action.payload
+          (rating) => rating.id !== action.payload
         );
-        state.success = true;
         state.error = null;
       })
       .addCase(deleteRating.rejected, (state, action) => {
@@ -120,5 +117,5 @@ const ratingSlice = createSlice({
   },
 });
 
-export const { resetSuccess, resetRatings } = ratingSlice.actions;
+export const { resetRatings } = ratingSlice.actions;
 export default ratingSlice.reducer;
