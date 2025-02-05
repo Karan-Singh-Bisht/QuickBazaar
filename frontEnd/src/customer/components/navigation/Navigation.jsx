@@ -38,7 +38,7 @@ export default function Navigation() {
 
   useEffect(() => {
     setOpen(false);
-  }, [location.pathname]);
+  }, [location]);
 
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -212,12 +212,7 @@ export default function Navigation() {
                               {section.items.map((item) => (
                                 <li
                                   onClick={() =>
-                                    handleCategoryClick(
-                                      category,
-                                      section,
-                                      item,
-                                      close
-                                    )
+                                    handleCategoryClick(category, section, item)
                                   }
                                   key={item.name}
                                   className="flow-root"
