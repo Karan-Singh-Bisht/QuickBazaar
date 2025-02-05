@@ -36,6 +36,10 @@ export default function Navigation() {
 
   const { loading, error } = useSelector((state) => state.auth);
 
+  useEffect(() => {
+    setOpen(false);
+  }, [location.pathname]);
+
   const handleUserClick = (event) => {
     setAnchorEl(event.currentTarget);
     setOpenUserMenu(true);
@@ -77,6 +81,7 @@ export default function Navigation() {
     dispatch(logoutUser());
     toast.success("Logged Out Successfully!");
   };
+
   // const handleMyOrderClick = () => {
   //   handleCloseUserMenu();
   //   auth.user?.role === "ROLE_ADMIN"
@@ -121,6 +126,17 @@ export default function Navigation() {
                     <span className="sr-only">Close menu</span>
                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                   </button>
+                </div>
+
+                <div className="space-y-6 border-t border-gray-200 px-4 py-6">
+                  <div className="flow-root">
+                    <a
+                      onClick={() => setOpenAuthModal(true)}
+                      className="-m-2 block p-2 font-medium text-gray-900"
+                    >
+                      Sign in
+                    </a>
+                  </div>
                 </div>
 
                 {/* Links */}
@@ -196,7 +212,12 @@ export default function Navigation() {
                               {section.items.map((item) => (
                                 <li
                                   onClick={() =>
-                                    handleCategoryClick(category, section, item)
+                                    handleCategoryClick(
+                                      category,
+                                      section,
+                                      item,
+                                      close
+                                    )
                                   }
                                   key={item.name}
                                   className="flow-root"
@@ -225,17 +246,6 @@ export default function Navigation() {
                       </a>
                     </div>
                   ))}
-                </div>
-
-                <div className="space-y-6 border-t border-gray-200 px-4 py-6">
-                  <div className="flow-root">
-                    <a
-                      href="/"
-                      className="-m-2 block p-2 font-medium text-gray-900"
-                    >
-                      Sign in
-                    </a>
-                  </div>
                 </div>
 
                 <div className="border-t border-gray-200 px-4 py-6">
@@ -374,8 +384,7 @@ export default function Navigation() {
                                                     handleCategoryClick(
                                                       category,
                                                       section,
-                                                      item,
-                                                      close
+                                                      item
                                                     )
                                                   }
                                                   className="cursor-pointer hover:text-gray-800"

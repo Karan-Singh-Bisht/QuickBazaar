@@ -31,7 +31,6 @@ const RegisterForm = () => {
       password: formData.get("password"),
     };
     const user = await dispatch(registerUser(userData));
-    console.log(user);
     if (user) {
       toast.success(`Welcome to QuickBazaar ${user.payload.user.firstName}`);
     } else {
