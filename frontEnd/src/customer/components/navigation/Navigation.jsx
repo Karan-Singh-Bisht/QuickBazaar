@@ -194,9 +194,15 @@ export default function Navigation() {
                               className="mt-6 flex flex-col space-y-6"
                             >
                               {section.items.map((item) => (
-                                <li key={item.name} className="flow-root">
+                                <li
+                                  onClick={() =>
+                                    handleCategoryClick(category, section, item)
+                                  }
+                                  key={item.name}
+                                  className="flow-root"
+                                >
                                   <p className="-m-2 block p-2 text-gray-500">
-                                    {"item.name"}
+                                    {item.name}
                                   </p>
                                 </li>
                               ))}
