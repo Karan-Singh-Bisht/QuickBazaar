@@ -34,7 +34,7 @@ const RegisterForm = () => {
     if (user) {
       toast.success(`Welcome to QuickBazaar ${user.payload.user.firstName}`);
     } else {
-      toast.error("Registration failed");
+      toast.error(`${error}`);
     }
   };
 

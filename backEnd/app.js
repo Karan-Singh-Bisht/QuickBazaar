@@ -8,7 +8,8 @@ const db = require("./config/db");
 db();
 
 const corsOptions = {
-  origin: "https://bucolic-rugelach-8be688.netlify.app",
+  // origin: "https://bucolic-rugelach-8be688.netlify.app",
+  origin: "*",
   credentials: true,
   maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
 };
