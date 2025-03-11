@@ -1,10 +1,17 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ product, index }) => {
+  const navigate = useNavigate();
   return (
     <div
       key={index}
       className="cursor-pointer flex flex-col bg-white rounded-lg shadow-lg overflow-hidden w-[16rem] mx-3 my-3"
+      onClick={() =>
+        navigate(
+          `/${product.topLavelCategory.toLowerCase()}/${product.secondLavelCategory.toLowerCase()}/${product.thirdLavelCategory.toLowerCase()}`
+        )
+      }
     >
       <div className="h-[18rem] w-full p-2">
         <img
